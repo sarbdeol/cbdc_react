@@ -36,7 +36,7 @@ const transferStatuses = {
 }
 
 const ReceivedCrossBorderTransfers = () => {
-    const sourceCurrency = 'NOK'
+    const sourceCurrency = 'GBP'
     const [account] = useGlobalState('account')
     const [signer] = useGlobalState('signer')
     const [provider] = useGlobalState('provider')
@@ -295,7 +295,7 @@ const ReceivedCrossBorderTransfers = () => {
             </Snackbar>
             <CardContent>
                 <Typography variant='h6' color='text.secondary' sx={{ fontSize: 18, color: '#153443' }}>
-                    RECEIVED CROSS BORDER TRANSFERS
+                    RECEIVED
                 </Typography>
                 <Box sx={{ mt: 3 }}>
                     <Stack direction='row' spacing={2}>

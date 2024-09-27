@@ -40,7 +40,7 @@ const BurnTokens = () => {
     const [success, setSuccess] = useState(false)
     const [, setError] = useState(false)
     const [disableBtn, setDisableBtn] = useState(false)
-    const [burnBtnText, setBurnBtnText] = useState('BURN TOKENS')
+    const [burnBtnText, setBurnBtnText] = useState('Burn CBDC')
 
     const handleClick = async () => {
         try {
@@ -58,7 +58,7 @@ const BurnTokens = () => {
             if (!isBurner) {
                 setOpen(true)
                 setError(true)
-                setMsg('Only wallets with the burner role can burn tokens.')
+                setMsg('Only wallets with the burner role can Burn CBDC.')
             } else if (amountToBurn > 0) {
                 setGlobalState('loading', true)
                 setDisableBtn(true)
@@ -75,7 +75,7 @@ const BurnTokens = () => {
                 setGlobalState('loading', false)
                 setAmountToBurn("0.0000")
                 setDisableBtn(false)
-                setBurnBtnText('BURN TOKENS')
+                setBurnBtnText('Burn CBDC')
             } else {
                 setOpen(true)
                 setError(true)
@@ -84,7 +84,7 @@ const BurnTokens = () => {
         } catch (e) {
             console.error(e)
             setDisableBtn(false)
-            setBurnBtnText('BURN TOKENS')
+            setBurnBtnText('Burn CBDC')
             setGlobalState('loading', false)
         }
     }
@@ -118,7 +118,7 @@ const BurnTokens = () => {
             </Snackbar>
             <CardContent>
                 <Typography variant='h6' color='text.secondary' sx={{ fontSize: 18, color: '#153443' }}>
-                    BURN TOKENS
+                    Burn CBDC
                 </Typography>
                 <Box
                     component='form'
@@ -139,7 +139,7 @@ const BurnTokens = () => {
                         inputMode='decimal'
                         InputProps={{
                             type: 'number',
-                            endAdornment: <InputAdornment position='end'>NOK</InputAdornment>,
+                            endAdornment: <InputAdornment position='end'>GBP</InputAdornment>,
                             style: inputProps
                         }}
                     />

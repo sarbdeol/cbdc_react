@@ -101,16 +101,16 @@ const Header = ({
                                     navPosition && `header-nav-${navPosition}`
                                 )}>
                                 <li className='nav-link'>
-                                    <Link to='/'>DASHBOARD</Link>
+                                    <Link to='/dashboard'>DASHBOARD</Link>
                                 </li>
                                 <li className='nav-link'>
                                     <Link to='/history'>HISTORY</Link>
                                 </li>
                                 <li className='nav-link'>
-                                    <Link to='/crossbordertransfers'>CROSS BORDER TRANSFERS</Link>
+                                    <Link to='/crossbordertransfers'>Bank to Bank Transfer</Link>
                                 </li>
                                 <li className='nav-link'>
-                                    <Link to='/'>ADMIN</Link>
+                                    <Link to='/dashboard'>CB</Link>
                                 </li>
                             </ul>
                         </div>

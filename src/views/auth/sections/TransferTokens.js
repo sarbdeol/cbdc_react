@@ -188,7 +188,7 @@ const TransferTokens = () => {
                         TOKEN TYPE
                     </Typography>
                     <Typography className='card-text' variant='h6'>
-                        NOK <span style={{ position: 'absolute' }}></span>
+                        GBP <span style={{ position: 'absolute' }}></span>
                     </Typography>
                 </Box>
 
@@ -212,7 +212,7 @@ const TransferTokens = () => {
                         inputMode='decimal'
                         InputProps={{
                             type: 'number',
-                            endAdornment: <InputAdornment position='end'>NOK</InputAdornment>,
+                            endAdornment: <InputAdornment position='end'>GBP</InputAdornment>,
                             style: inputProps
                         }}
                     />

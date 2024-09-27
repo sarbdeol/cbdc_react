@@ -56,11 +56,11 @@ const validatePaymentCompletionResponse = ajv.compile(paymentCompletionResponseS
 
 const bufToStr = b => b.toString('hex')
 
-const TARGET_NOK_ALLOWANCE = BigNumber.from(100000n * 10n ** 4n);
+const TARGET_GBP_ALLOWANCE = BigNumber.from(100000n * 10n ** 4n);
 
-const NOK_DECIMALS = 4;
+const GBP_DECIMALS = 4;
 const HTLC_CONTRACT_ADDRESS = process.env.HTLC_CONTRACT_ADDRESS
-const NOK_CONTRACT_ADDRESS = "0x6749374B18A571193138251EB52f7a9B4fC5524e";
+const GBP_CONTRACT_ADDRESS = "0x6749374B18A571193138251EB52f7a9B4fC5524e";
 
 const HTLC_ABI = JSON.parse(fs.readFileSync('./abi/HashedTimeLockERC20.json', 'utf-8'))
 const CB_TOKEN_ABI = JSON.parse(fs.readFileSync('./abi/CBToken.json', 'utf-8'))
@@ -111,7 +111,7 @@ const fxpWallet = ethers.Wallet.fromEncryptedJsonSync(
     readSecret(`${FXP_ID.toLowerCase()}_wallet_password`)
 ).connect(jsonRPCProvider)
 
-const nokContract = new ethers.Contract(NOK_CONTRACT_ADDRESS, CB_TOKEN_ABI, jsonRPCProvider).connect(fxpWallet)
+const GBPContract = new ethers.Contract(GBP_CONTRACT_ADDRESS, CB_TOKEN_ABI, jsonRPCProvider).connect(fxpWallet)
 const htlcContract = new ethers.Contract(HTLC_CONTRACT_ADDRESS, HTLC_ABI, jsonRPCProvider).connect(fxpWallet)
 
 const DB = await open({
@@ -267,11 +267,11 @@ app.post('/payment/setup', asyncHandler(async (req, res, next) => {
         if (isIntermediatePvpvp) {
             console.log(`Payment Setup: PVPVP INTERMEDIATE Transfer`)
             targetWallet = paymentInstruction.intermediateRecipientFx.walletAddress.toLowerCase()
-            amount = BigNumber.from(Math.round(Number.parseFloat(body.paymentInstruction?.intermediateAmount) * 10 ** NOK_DECIMALS))
+            amount = BigNumber.from(Math.round(Number.parseFloat(body.paymentInstruction?.intermediateAmount) * 10 ** GBP_DECIMALS))
         } else if (isRecipientPvpvp) {
             console.log(`Payment Setup: PVPVP RECIPIENT Transfer`)
             targetWallet = paymentInstruction.recipient?.walletAddress.toLowerCase()
-            amount = BigNumber.from(Math.round(Number.parseFloat(body.paymentInstruction?.targetAmount) * 10 ** NOK_DECIMALS))
+            amount = BigNumber.from(Math.round(Number.parseFloat(body.paymentInstruction?.targetAmount) * 10 ** GBP_DECIMALS))
         } else {
             console.error(`Payment Setup: Failed due to unsupported PVPVP transfer. Neither intermediateSenderFx nor recipientSystemFx matched my wallet address ${fxpWallet.address}`)
             res.statusCode = 400
@@ -280,10 +280,10 @@ app.post('/payment/setup', asyncHandler(async (req, res, next) => {
         }
     } else {
         targetWallet = paymentInstruction.recipient?.walletAddress.toLowerCase()
-        amount = BigNumber.from(Math.round(Number.parseFloat(body.paymentInstruction?.targetAmount) * 10 ** NOK_DECIMALS))
+        amount = BigNumber.from(Math.round(Number.parseFloat(body.paymentInstruction?.targetAmount) * 10 ** GBP_DECIMALS))
     }
 
-    const balance = await nokContract.balanceOf(fxpWallet.address)
+    const balance = await GBPContract.balanceOf(fxpWallet.address)
     if (amount.gt(balance)) {
         console.error(`Payment Setup: Request failed because FXP wallet has insufficient funds. Balance ${balance} < amount ${amount}`)
         res.statusCode = 500
@@ -291,9 +291,9 @@ app.post('/payment/setup', asyncHandler(async (req, res, next) => {
         return
     }
 
-    const existingAllowance = await nokContract.allowance(fxpWallet.address, htlcContract.address)
+    const existingAllowance = await GBPContract.allowance(fxpWallet.address, htlcContract.address)
     if (existingAllowance.lt(amount)) {
-        const approveTx = await nokContract.increaseAllowance(htlcContract.address, TARGET_NOK_ALLOWANCE, TX_OVERRIDES)
+        const approveTx = await GBPContract.increaseAllowance(htlcContract.address, TARGET_GBP_ALLOWANCE, TX_OVERRIDES)
         await approveTx.wait()
         console.log("Payment Setup: Successfully increased allowance in transaction: " + approveTx.hash)
     }
@@ -311,8 +311,8 @@ app.post('/payment/setup', asyncHandler(async (req, res, next) => {
     if (!hashLock.startsWith('0x')) {
         hashLock = '0x' + hashLock
     }
-    console.log(`Payment Setup: Calling HTLCERC20.newContract(${targetWallet}, ${hashLock}, ${lockEndSeconds}, ${nokContract.address}, ${amount})`)
-    const lockTx = await htlcContract.newContract(targetWallet, hashLock, lockEndSeconds, nokContract.address, amount, TX_OVERRIDES)
+    console.log(`Payment Setup: Calling HTLCERC20.newContract(${targetWallet}, ${hashLock}, ${lockEndSeconds}, ${GBPContract.address}, ${amount})`)
+    const lockTx = await htlcContract.newContract(targetWallet, hashLock, lockEndSeconds, GBPContract.address, amount, TX_OVERRIDES)
     const lockTxReceipt = await lockTx.wait()
     const lockId = lockTxReceipt.events.find(e => e.event === 'HTLCERC20New').args[0]
     console.log(`Payment Setup: Successfully created a lock with id: ${lockId} in transaction: ${lockTx.hash} `)
@@ -425,13 +425,13 @@ app.post('/payment/locked', asyncHandler(async (req, res, next) => {
             lockedPaymentSender = paymentInstruction.sender
             lockedPaymentReceiver = paymentInstruction.senderSystemFx
             forwardToHostHeader = paymentInstruction.intermediateSenderFx?.host
-            amount = Math.round(Number.parseFloat(paymentInstruction.sourceAmount) * 10 ** NOK_DECIMALS)
+            amount = Math.round(Number.parseFloat(paymentInstruction.sourceAmount) * 10 ** GBP_DECIMALS)
         } else if (isIntermediatePvpvp) {
             console.log(`Payment Locked: PvPvP INTERMEDIATE Transfer`)
             lockedPaymentSender = paymentInstruction.intermediateSenderFx
             lockedPaymentReceiver = paymentInstruction.intermediateRecipientFx
             forwardToHostHeader = paymentInstruction.recipientSystemFx?.host
-            amount = Math.round(Number.parseFloat(paymentInstruction.intermediateAmount) * 10 ** NOK_DECIMALS)
+            amount = Math.round(Number.parseFloat(paymentInstruction.intermediateAmount) * 10 ** GBP_DECIMALS)
         } else {
             console.error(`Payment Locked: Unsupported PvPvP Transfer. Neither senderSystemFx nor intermediateRecipientFx matched my wallet address ${fxpWallet.address}`)
             res.statusCode = 400
@@ -442,7 +442,7 @@ app.post('/payment/locked', asyncHandler(async (req, res, next) => {
         lockedPaymentSender = paymentInstruction.sender
         lockedPaymentReceiver = paymentInstruction.senderSystemFx
         forwardToHostHeader = paymentInstruction.recipientSystemFx?.host
-        amount = Math.round(Number.parseFloat(paymentInstruction.sourceAmount) * 10 ** NOK_DECIMALS)
+        amount = Math.round(Number.parseFloat(paymentInstruction.sourceAmount) * 10 ** GBP_DECIMALS)
     }
 
     const htlc =  await htlcContract.getContract(lockId)
@@ -569,10 +569,10 @@ app.post('/payment/completion', asyncHandler(async (req, res, next) => {
 console.log(`#### RUNNING AS ${FXP_ID} WITH ADDRESS: ${fxpWallet.address}`)
 
 setIntervalAsync(async () => {
-    const existingAllowance = (await nokContract.allowance(fxpWallet.address, htlcContract.address))
-    if (existingAllowance.lt(TARGET_NOK_ALLOWANCE.div(BigNumber.from("2")))) {
-        console.log("FXP Wallet Allowance Interval: Increasing allowance by: " + (TARGET_NOK_ALLOWANCE.sub(existingAllowance)))
-        const approveTx = await nokContract.increaseAllowance(htlcContract.address, (TARGET_NOK_ALLOWANCE.sub(existingAllowance)))
+    const existingAllowance = (await GBPContract.allowance(fxpWallet.address, htlcContract.address))
+    if (existingAllowance.lt(TARGET_GBP_ALLOWANCE.div(BigNumber.from("2")))) {
+        console.log("FXP Wallet Allowance Interval: Increasing allowance by: " + (TARGET_GBP_ALLOWANCE.sub(existingAllowance)))
+        const approveTx = await GBPContract.increaseAllowance(htlcContract.address, (TARGET_GBP_ALLOWANCE.sub(existingAllowance)))
         await approveTx.wait()
     } else {
         console.log("FXP Wallet Allowance Interval: Existing allowance is: " + existingAllowance.toString() + ", no need to increase allowance at this time.")
@@ -582,7 +582,7 @@ setIntervalAsync(async () => {
 
 const IS_SET_FX_RATES_ENABLED = false
 const FETCH_RATES_PERIOD_MINUTES = 1
-const FX_MARKETS = ["SEK/NOK", "ILS/NOK"]
+const FX_MARKETS = ["SEK/GBP", "ILS/GBP"]
 const FX_API_BASE_URL = process.env.FX_API_BASE_URL
 if (IS_SET_FX_RATES_ENABLED) {
     setIntervalAsync(async () => {

@@ -26,15 +26,15 @@ const SENDER_LOCK_DELAY_SECONDS = 60
 const SENDER_LOCK_NETWORK_DELAY_SECONDS = 5
 const COUNTRIES = [
     {
-        'name': 'Norway',
-        'currency': 'NOK',
+        'name': 'Bank1',
+        'currency': 'GBP',
     },
     {
-        'name': 'Israel',
+        'name': 'Bank2',
         'currency': 'ILS',
     },
     {
-        'name': 'Sweden',
+        'name': 'Bank3',
         'currency': 'SEK',
     }
 ]
@@ -80,7 +80,7 @@ const CrossBorderTransfer = () => {
         return <MuiAlert elevation={6} ref={ref} variant='filled' {...props} />
     })
 
-    const sourceCurrency = 'NOK'
+    const sourceCurrency = 'GBP'
     const [targetCurrency, setTargetCurrency] = useState('')
     const [amount, setAmount] = useState('0.0000')
     const [amountType, setAmountType] = useState('')
@@ -159,7 +159,7 @@ const CrossBorderTransfer = () => {
             setAlertOpen(true)
             setAlertSuccess(false)
             setAlertError(true)
-            setAlertMessage('Please select country.')
+            setAlertMessage('Please select Bank.')
             return
         }
 
@@ -540,7 +540,7 @@ const CrossBorderTransfer = () => {
             </Snackbar>
             <CardContent>
                 <Typography variant='h6' color='text.secondary' sx={{ fontSize: 18, color: '#153443' }}>
-                    NEW CROSS BORDER TRANSFER
+                    NEW TRANSFER
                 </Typography>
                 <Box sx={{ mt: 3 }}>
                     <Typography variant='p' color='text.secondary' sx={{ fontSize: 16 }}>
@@ -548,7 +548,7 @@ const CrossBorderTransfer = () => {
                     </Typography>
                     <Box component='form' sx={{ mt: 2 }}>
                         <FormControl fullWidth>
-                            <InputLabel id="select-country-label">Country</InputLabel>
+                            <InputLabel id="select-country-label">Bank</InputLabel>
                             <Select
                                 id='select-country'
                                 labelId='select-country-label'
@@ -574,7 +574,7 @@ const CrossBorderTransfer = () => {
                                 sx={{ width: '100%' }}
                                 onChange={handleAmountTypeChange}
                             >
-                                <MenuItem value={"SOURCE"}>NOK</MenuItem>
+                                <MenuItem value={"SOURCE"}>GBP</MenuItem>
                                 <MenuItem value={"TARGET"}>Receiver's Currency {targetCurrency ? `(${targetCurrency})` : ''}</MenuItem>
                             </Select>
                         </FormControl>

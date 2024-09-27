@@ -44,7 +44,7 @@ const validatePaymentDiscoveryResponse = ajv.compile(paymentDiscoveryResponseSch
 const secretsByAddressResponseSchema = JSON.parse(fs.readFileSync('./json-schema/secrets-by-address/response-secrets-by-address-schema.json', 'utf-8'))
 const validateSecretsByAddressResponse = ajv.compile(secretsByAddressResponseSchema)
 
-const NOK_DECIMALS = 4;
+const GBP_DECIMALS = 4;
 const HTLC_CONTRACT_ADDRESS = process.env.HTLC_CONTRACT_ADDRESS
 const HTLC_ABI = JSON.parse(fs.readFileSync('./abi/HashedTimeLockERC20.json', 'utf-8'))
 
@@ -242,7 +242,7 @@ app.post('/payment/discovery', asyncHandler(async (req, res, next) => {
     const sourceCurrency = body.paymentInstruction?.sourceCurrency.toUpperCase()
     const sourceAddress = body.paymentInstruction?.sender?.walletAddress.toLowerCase()
     const paymentId = body.paymentInstruction?.paymentId
-    const amount = Math.round(Number.parseFloat(body.paymentInstruction?.targetAmount) * 10 ** NOK_DECIMALS)
+    const amount = Math.round(Number.parseFloat(body.paymentInstruction?.targetAmount) * 10 ** GBP_DECIMALS)
     const secretHashPair = generateSecret()
     const insertStatement = `
         INSERT INTO PSP_DATA 

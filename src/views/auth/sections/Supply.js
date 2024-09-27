@@ -17,7 +17,7 @@ const Supply = () => {
                     SUPPLY
                 </Typography>
                 <Typography variant='h6' className='card-text'>
-                    {totalSupply} NOK
+                    {totalSupply} GBP
                 </Typography>
             </CardContent>
         </Card>

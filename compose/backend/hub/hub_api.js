@@ -103,7 +103,7 @@ const lookupHost = (host) => {
 
 const CURRENCY_PRECISIONS = {
     'ILS': 2,
-    'NOK': 2,
+    'GBP': 2,
     'SEK': 2
 }
 
@@ -144,19 +144,19 @@ app.post('/quote', asyncHandler(async (req, res, next) => {
     const rateType = FX_RATE_TYPES.BID
     let rate, senderFxpHost, recipientFxpHost, fxpName, fxpAddress
 
-    if (body.sourceCurrency === 'NOK' && body.targetCurrency === 'SEK') {
+    if (body.sourceCurrency === 'GBP' && body.targetCurrency === 'SEK') {
         rate = 1.0448
         senderFxpHost = FX_PROVIDERS.FXP1.NO.host
         recipientFxpHost = FX_PROVIDERS.FXP1.SE.host
         fxpName = FX_PROVIDERS.FXP1.name
         fxpAddress = FX_PROVIDERS.FXP1.NO.walletAddress
-    } else if (body.sourceCurrency === 'NOK' && body.targetCurrency === 'ILS') {
+    } else if (body.sourceCurrency === 'GBP' && body.targetCurrency === 'ILS') {
         rate = 0.3383
         senderFxpHost = FX_PROVIDERS.FXP1.NO.host
         recipientFxpHost = FX_PROVIDERS.FXP1.IL.host
         fxpName = FX_PROVIDERS.FXP1.name
         fxpAddress = FX_PROVIDERS.FXP1.NO.walletAddress
-    } else if (body.sourceCurrency === 'NOK' && body.targetCurrency === 'NOK') {
+    } else if (body.sourceCurrency === 'GBP' && body.targetCurrency === 'GBP') {
         rate = 1.0
         if (Math.random() > 0.5) {
             senderFxpHost = FX_PROVIDERS.FXP2.NO.host
@@ -208,7 +208,7 @@ app.post('/quote', asyncHandler(async (req, res, next) => {
         "expiryTimestamp": expiryTimestamp.toISOString()
     }
 
-    if (IS_PVPVP_ENABLED === true && body.sourceCurrency === "NOK" && body.targetCurrency === "NOK") {
+    if (IS_PVPVP_ENABLED === true && body.sourceCurrency === "GBP" && body.targetCurrency === "GBP") {
         responseBody.rateType = FX_RATE_TYPES.EFFECTIVE
         responseBody.fxName = `${FX_PROVIDERS.FXP1.name} + ${FX_PROVIDERS.FXP2.name}`
         responseBody.senderSystemFx.walletAddress = FX_PROVIDERS.FXP1.NO.walletAddress
@@ -217,7 +217,7 @@ app.post('/quote', asyncHandler(async (req, res, next) => {
             "walletAddress": FX_PROVIDERS.FXP1.NO.walletAddress,
             "host": FX_PROVIDERS.FXP1.NO.host
         }
-        responseBody["intermediateCurrency"] = "NOK"
+        responseBody["intermediateCurrency"] = "GBP"
         responseBody["intermediateAmount"] = responseBody.sourceAmount
         responseBody["intermediateRecipientFx"] = {
             "walletAddress": FX_PROVIDERS.FXP2.NO.walletAddress,

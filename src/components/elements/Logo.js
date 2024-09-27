@@ -13,7 +13,12 @@ export default function Logo({ disabledLink = false, sx }) {
 
     const logo = (
         <Box sx={{ width: 200, height: 'auto', ...sx }}>
-            <svg version='1.1' id='Norges_Bank_Investment_Management'
+            CBDC Infrastructure 
+
+
+
+
+            {/* <svg version='1.1' id='Norges_Bank_Investment_Management'
                 xmlns='http://www.w3.org/2000/svg' x='0px' y='0px' width='500'
                 height='100%' viewBox='0 0 272.126 48.189' enableBackground='new 0 0 272.126 48.189' >
                 <g>
@@ -55,7 +60,7 @@ export default function Logo({ disabledLink = false, sx }) {
                         </g>
                     </g>
                 </g>
-            </svg>
+            </svg> */}
         </Box>
     )
 

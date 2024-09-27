@@ -39,7 +39,7 @@ const MintTokens = () => {
     const [success, setSuccess] = useState(false)
     const [, setError] = useState(false)
     const [disableBtn, setDisableBtn] = useState(false)
-    const [mintBtnText, setMintBtnText] = useState('MINT TOKENS')
+    const [mintBtnText, setMintBtnText] = useState('MINT CBDC')
 
     const handleClick = async () => {
         try {
@@ -57,7 +57,7 @@ const MintTokens = () => {
             if (!isMinter) {
                 setOpen(true)
                 setError(true)
-                setMsg('Only wallets with the minter role can mint tokens.')
+                setMsg('Only wallets with the minter role can MINT CBDC.')
             } else if (amountToMint > 0) {
                 setGlobalState('loading', true)
                 setDisableBtn(true)
@@ -74,7 +74,7 @@ const MintTokens = () => {
                 setGlobalState('loading', false)
                 setAmountToMint("0.0000")
                 setDisableBtn(false)
-                setMintBtnText('MINT TOKENS')
+                setMintBtnText('MINT CBDC')
             } else {
                 setOpen(true)
                 setError(true)
@@ -83,7 +83,7 @@ const MintTokens = () => {
         } catch (e) {
             console.error(e)
             setDisableBtn(false)
-            setMintBtnText('MINT TOKENS')
+            setMintBtnText('MINT CBDC')
             setGlobalState('loading', false)
         }
     }
@@ -117,7 +117,7 @@ const MintTokens = () => {
             </Snackbar>
             <CardContent>
                 <Typography variant='h6' color='text.secondary' sx={{ fontSize: 18, color: '#153443' }}>
-                    MINT TOKENS
+                    MINT CBDC
                 </Typography>
 
                 <Box
@@ -139,7 +139,7 @@ const MintTokens = () => {
                         inputMode='decimal'
                         InputProps={{
                             type: 'number',
-                            endAdornment: <InputAdornment position='end'>NOK</InputAdornment>,
+                            endAdornment: <InputAdornment position='end'>GBP</InputAdornment>,
                             style: inputProps
                         }}
                     />

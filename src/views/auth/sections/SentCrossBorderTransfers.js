@@ -36,7 +36,7 @@ const transferStatuses = {
 const APPROX_NUM_BLOCKS_IN_24_HOURS = 17280
 
 const SentCrossBorderTransfers = () => {
-    const sourceCurrency = 'NOK'
+    const sourceCurrency = 'GBP'
     const [contractToPaymentMap] = useGlobalState('contractToPaymentMap')
 
     const [account] = useGlobalState('account')
@@ -239,7 +239,7 @@ const SentCrossBorderTransfers = () => {
             </Snackbar>
             <CardContent>
                 <Typography variant='h6' color='text.secondary' sx={{ fontSize: 18, color: '#153443' }}>
-                    SENT CROSS BORDER TRANSFERS
+                    SENT
                 </Typography>
                 <Box sx={{ mt: 3 }}>
                     <Stack direction='row' spacing={2}>

@@ -91,7 +91,7 @@ const History = () => {
                         type: transactionType(fromAddress, toAddress),
                         from: fromAddress,
                         to: toAddress,
-                        currency: 'NOK',
+                        currency: 'GBP',
                         transactionHash: item.transactionHash
                     }
                 }).reverse()

@@ -2,7 +2,7 @@ import { parseUnits, formatUnits } from 'ethers/lib/utils'
 
 export const currencyPrecisions = {
     'ILS': 2,
-    'NOK': 4,
+    'GBP': 4,
     'SEK': 2
 }
 

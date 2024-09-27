@@ -65,7 +65,7 @@ Configure the following environment variables in `docker-compose.yml` and `docke
 - HUB:
     - `PORT`
     - `IS_PVPVP_ENABLED`
-    - `NO_NOK_HOST`
+    - `NO_GBP_HOST`
     - `NO_FXP1_HOST`
     - `NO_FXP1_HOST_NAME`
     - `NO_FXP1_WALLET_ADDRESS`
