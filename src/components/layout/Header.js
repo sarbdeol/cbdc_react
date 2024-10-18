@@ -103,11 +103,12 @@ const Header = ({
                                 <li className='nav-link'>
                                     <Link to='/dashboard'>DASHBOARD</Link>
                                 </li>
-                                <li className='nav-link'>
-                                    <Link to='/history'>HISTORY</Link>
-                                </li>
+                                
                                 <li className='nav-link'>
                                     <Link to='/crossbordertransfers'>Bank to Bank Transfer</Link>
+                                </li>
+                                <li className='nav-link'>
+                                    <Link to='/history'>HISTORY</Link>
                                 </li>
                                 <li className='nav-link'>
                                     <Link to='/dashboard'>CB</Link>

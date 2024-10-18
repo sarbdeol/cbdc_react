@@ -9,8 +9,8 @@ const AppRoute = () => {
   return (
     <Routes>
       <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/history" element={<History />} />
       <Route path="/crossbordertransfers" element={<CrossBorder />} />
+      <Route path="/history" element={<History />} />
       {/* Default redirect to Dashboard if accessing /home */}
       <Route path="/" element={<Navigate to="/dashboard" />} />
     </Routes>
